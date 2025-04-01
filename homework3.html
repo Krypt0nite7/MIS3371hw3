@@ -1,7 +1,7 @@
  <!-- 
 Program name: patient-form.html
 Author: Deshunn Jackson
-Date created: 02/03/2025
+Date created: 03/03/2025
 Date last edited: The date you submitted it
 Version: 1.0
 Description: Jackson's Medical Patient Form
@@ -13,7 +13,7 @@ Description: Jackson's Medical Patient Form
         content="width=device-width, intitial-scale=1.0"
         >
         
-
+         <!-- This is the title of the form page. -->
         <title>Jackson's Medical</title>
 
         <!-- Load external CSS styles -->
@@ -73,7 +73,7 @@ Description: Jackson's Medical Patient Form
     <tr class="form">
         <td align="left"> <!--I attempted to symplify the string into one with the First, Middle Inital, and Last Name-->
                         <!--The "this.setCustomvalidity is use, that way the patient have to input the information for First,Middle and Last name"-->
-            <label for="FirstName">First Name</label>
+            <label for="FirstName">First Name</label> <!-- First/Last with a minium of 4 characters, and the input is required-->
             <input  type="text"  
                     size = "2" 
                     minlength="4"
@@ -84,7 +84,7 @@ Description: Jackson's Medical Patient Form
                     oninvalid="this.setCustomValidity('firstname is Required')" 
                     oninput="this.setCustomValidity('')"
                     placeholder="required" >
-            <label for="MiddleInit">Middle Int.</label>
+            <label for="MiddleInit">Middle Int.</label> <!--the middle initial requires only one letter for input-->
             <input  type="text" 
                     size = "2" 
                     minlength="1"
@@ -112,7 +112,7 @@ Description: Jackson's Medical Patient Form
     </tr>
     <tr  class="form">
         <td align="left"> <!--Here is the DOB information that is needed. The place hoder informs the patient that they have to put it in "MM/DD/YYYY" -->
-            <label for="date" >Date of Birth</label>
+            <label for="date" >Date of Birth</label> <!--The patient that is filling out can input their DOB here in the format "MM/DD/YYYY" and is required before the form is submitted -->
             <input  type="text"
                     id="date"
                     name="date"
@@ -138,7 +138,7 @@ Description: Jackson's Medical Patient Form
                     oninput="this.setCustomValidity('')"
                     placeholder="1234 Main St"> <br> <!--This is a Break-->
             <label for="addr2" >Address Line 2</label> <!--Address line 2 required the patient to input their address
-                                                        with a minimum of 8 characters to a maximum of 30 characters-->
+                                                        with a minimum of 8 characters to a maximum of 30 characters. Address 2 is optional if the paitent not living in a suit/apt.-->
                 <input type="text" 
                     size="20" 
                     minlength="8"
@@ -148,14 +148,14 @@ Description: Jackson's Medical Patient Form
                     oninvalid="this.setCustomValidity('At least 1 address line Required')" 
                     oninput="this.setCustomValidity('')"
                     placeholder="Apt/Suite">
-             <span id="addr1_text">
+             <span id="addr1_text"> <!--for java to validate before submission of the form-->
 
         </td>
     </tr>
     <tr class="form">  <!--New table Row-->
         <td align="left"> <!--New Table Data -->
-            <label for="city">City,</label> <!--This request for a City in the form-->
-            <label for="state">State</label><!--This request for the State in the form with options show below-->
+            <label for="city">City,</label> <!--This request for a City in the form and is required-->
+            <label for="state">State</label><!--This request for the State in the form with options show below and is required-->
                 <input type="text" 
                     size="10" 
                     maxlength="25" 
@@ -164,7 +164,7 @@ Description: Jackson's Medical Patient Form
                     oninvalid="this.setCustomValidity('You forgot City')"
                     oninput="this.setCustomValidity('')"
                     placeholder="Anytown (req'd)"
-                     >
+                     > <!-- the text length for city have a maximum of 25 characters and is validated by java-->
                     <select id="State" name="State" required> <!--This is mandatory for the patient to select a state in the form they reside in-->
                         <option value="">Select a State</option>
                         <option value="AL">Alabama</option>
@@ -230,7 +230,7 @@ Description: Jackson's Medical Patient Form
                     oninvalid="this.setCustomValidity('5 Digit Zip/Postal Code required')"
                     oninput="this.setCustomValidity('')"
                     placeholder="00000"
-                    >
+                    > <!-- the zipcode have to hav e5 digits only and is validated by java -->
         </td>
     </tr>
     <tr class="form"> <!--This string is requesting the Patient to input the Phone number in the form-->
@@ -243,7 +243,7 @@ Description: Jackson's Medical Patient Form
                     id="Phone" 
                     name="Phone" 
                     placeholder="(713)555-1212"
-                    required>
+                    required> <!-- the number have to be in the format of "(XXX)XXX-XXXX" before the patient submits the form and is validated by java.-->
                     <span id="phone_text"></span><!--This is requiring the patient to input their email in the form-->
             <label for="email">Email:</label> <!--The patient is required to input a email address with a maximum of 30 characters -->
                 <input type="text"
@@ -252,14 +252,14 @@ Description: Jackson's Medical Patient Form
                     id="email" 
                     name="email" 
                     placeholder="email"
-                    required>
+                    required> <!--email can have a maximum of 30 characters and is validated by java from "id=email"-->
                     <span id="email_text"></span>
                     
         </td>
     </tr>
     <tr class="form">
         <td align="left">
-            <label for="ssn">Social Security Number</label>
+            <label for="ssn">Social Security Number</label> <!--the social security my be in "XXX-XX-XXX" format and completed before is it submit and is validated by java. It should have only a minimum length of 11 and a maximum length on 11. -->
                 <input type="text"
                         size="11" 
                         minlength="11"
@@ -275,7 +275,7 @@ Description: Jackson's Medical Patient Form
     </tr>
     <tr class="form">
         <td align="left">
-            <label for="userid">User ID</label>
+            <label for="userid">User ID</label> <!--The User ID must have a minimum of 5 character to a maximum of 20 characters. Also the user id must start with an Upper Case letter for Case sensitive purposes. -->
                 <input type="text"
                     size="15" 
                     minlength="5"
@@ -292,9 +292,10 @@ Description: Jackson's Medical Patient Form
     </tr>
 <tr>
     <td align="left">
-        <label for="password1">Preferred Password:</label><!--The password must be at least 8 characters long with at least one digit (0-9), one lowercase letter, one uppercase letter, and cannot match the UserID-->
+        <label for="password1">Preferred Password:</label><!--The password must be minimum of 8 characters to a maximum of 30 characteres with at least one digit (0-9), one lowercase letter, one uppercase letter, and cannot match the UserID and is also validated with java-->
         <input type="password" 
                 size="17" 
+                minlength="8"
                 maxlength="30" 
                 id="password1" 
                 name="password1" 
@@ -309,7 +310,7 @@ Description: Jackson's Medical Patient Form
 </tr>
 <tr>
     <td align="left">
-        <label for="password2">Re-enter Password:</label><!--The password confirmation must match the password entered above-->
+        <label for="password2">Re-enter Password:</label><!--The password confirmation must match the password entered above "Password1" and is validated with java-->
         <input type="password" 
                 size="17" 
                 maxlength="30" 
@@ -326,7 +327,7 @@ Description: Jackson's Medical Patient Form
   
    <tr class="form">
         <td align="left"> <!-- Here, the patient have to fill the questionair regarding the Bird Flu -->
-            <p><strong>Do you have the Bird Flu?</strong></p>
+            <p><strong>Do you have the Bird Flu?</strong></p> <!--this form is askign this patient to whether they have the bird flu with "Yes/No/I don't know"radio buttons. This form is also validarted with java through the "id" command -->
                 <input type="radio" id="Yes" name="fav_language" value="Yes" required>
                 <label for ="Symptoms">Yes</label><br>
                 <input type="radio" id="No" name="fav_language" value="No">
@@ -336,8 +337,8 @@ Description: Jackson's Medical Patient Form
         </td>
     </tr>
     <tr class="form">
-            <td align="left"> <!--Here is a Radio input for the patients to input in the form-->
-                <p><strong>What symptoms have you experienced?</strong></p>
+            <td align="left"> <!--Here is a Radio input for the patients to input in the form--><!-- the patient can select which symptoms they have been experiencing if they have the bird flu or not shure if they have the bird flu-->
+                <p><strong>What symptoms have you experienced?</strong></p> <!--This is section is also validated by java throuhg id-->
                 <input type="checkbox" id="symptom1" name="symptom1" value="Cough">
                 <label for="symptoms1"> Cough</label><br>
                 <input type="checkbox" id="symptom2" name="symptom2" value="Eye Redness">
@@ -356,13 +357,13 @@ Description: Jackson's Medical Patient Form
     </td>
     <tr class="form">
         <td align="left"> <!--This allows the patient to set a Date for the appointment-->
-            <label for="Date">Date:</label>
+            <label for="Date">Date:</label> <!--When the patient makes an appointment, it have to be with hours of operations. Java will validate to be sure thee appointment is within the time frame-->
             <input type="Date" 
                     id="Date" 
                     name="Date"
                     required> </br>
                     <!--This allows the patient to set a time for the appointment-->
-            <label for="Time">Time:</label>
+            <label for="Time">Time:</label> <!--The patient have to set a time with operation hours in order for the form to be comlteted and is validated by java "id" -->
             <input type="Time" 
                     id="Time" 
                     name="Time"
@@ -374,7 +375,7 @@ Description: Jackson's Medical Patient Form
         </td>
     </tr>
 
-    <tr class="form">
+    <tr class="form"> <!-- In this code there is a scaling range from 1- 10 with 1 being "least painful" and 10 being "most painful" with a happy face of the left side and a sad face on the right side-->
         <td align="Middle">
             <label for="Scale" style="font-size: 15;">On a of Scale 1-10, How is the Pain? </label></br>
             <img 
@@ -404,7 +405,7 @@ Description: Jackson's Medical Patient Form
         output.innerHTML = this.value;
     }
 </script>
- <td align="Middle">
+ <td align="Middle"> <!-- the patient can go into more details on how the pain feel to better aid the doctor on detailed descriptions. The comment have to be within the count of 200 words.  -->
     <label for="description">Explain more about your Pain/Symptoms</label>
 </td></br>
 <tr  class="form">
@@ -422,7 +423,7 @@ Description: Jackson's Medical Patient Form
         </td>
 </tr>
 <tr>        
-        <td colspan="3">
+        <td colspan="3"> <!-- here when the patient is done filling out the form, they can check form to see if all fields have been done correctly and can send the form ass a subbmission. -->
             <center>
             <input type="button" id="getdata" value="Get Data V1" onclick='getdata1()'>
             <input type="button" id="check" value="Check your input" onclick="checkform()">
