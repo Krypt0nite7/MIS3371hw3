@@ -1,9 +1,9 @@
- /*
+/*
  Name: Deshunn Jackson
  File: homework3.js
- Date Created: 02/03/2025
+ Date Created: 03/03/2025
  Date Updated: 03/21/2025
- Purpose: Validate data from the patient medical form
+ Purpose: Validate data from the patient medical form with enhanced validation for phone, email, and user ID
 */
 
 // Initialize error flag
@@ -14,7 +14,7 @@ function processFormSubmission() {
   // Reset error flag
   errorFlag = 0;
   
-  // Validate all form fields
+  // This helps validate all form fields
   validateName();
   validateDOB();
   validateAddress();
@@ -27,7 +27,7 @@ function processFormSubmission() {
   validateAppointment();
   validateDescription();
   
-  // If any errors exist, prevent form submission
+  // If there are any errors exist, this prevent form submission
   if (errorFlag > 0) {
     alert("Please fix all form errors before submitting.");
     return false;
@@ -36,27 +36,27 @@ function processFormSubmission() {
   return true;
 }
 
-// Validate First, Middle Initial, and Last Name
+// this help validates the First, Middle Initial, and Last Name
 function validateName() {
   const firstName = document.getElementById("FirstName").value;
   const middleInit = document.getElementById("MiddleInit").value;
   const lastName = document.getElementById("LastName").value;
   
-  // Validate first name
+  // first name is validated to ensure it is a minimum of 4 characters.
   if (firstName.length < 4) {
     document.getElementById("name_text").innerHTML = "First name must be at least 4 characters.";
     errorFlag++;
     return;
   }
   
-  // Validate middle initial (exactly 1 character)
+  // middle initial (exactly 1 character) is validated
   if (middleInit.length !== 1) {
     document.getElementById("name_text").innerHTML = "Middle initial must be exactly 1 character.";
     errorFlag++;
     return;
   }
   
-  // Validate last name
+  // This validates the last name to ensure it is at least 4 characters but can be more. 
   if (lastName.length < 4) {
     document.getElementById("name_text").innerHTML = "Last name must be at least 4 characters.";
     errorFlag++;
@@ -66,7 +66,7 @@ function validateName() {
   document.getElementById("name_text").innerHTML = "";
 }
 
-// Validate Date of Birth
+// This makesure the DOB is in the format of "MM/DD/YYYY" with numbers only before submission of the  form
 function validateDOB() {
   const dobInput = document.getElementById("date").value;
   const dobPattern = /^(0[1-9]|1[0-2])\/(0[1-9]|[12][0-9]|3[01])\/\d{4}$/;
@@ -81,7 +81,7 @@ function validateDOB() {
   }
 }
 
-// Validate Address
+// This validates the address of address1 and is required to be field out.
 function validateAddress() {
   const addr1 = document.getElementById("addr1").value;
   
@@ -93,7 +93,7 @@ function validateAddress() {
   }
 }
 
-// Validate City, State, and Zip
+// this validates the City, State, and Zip when the user is putting in the information
 function validateCityStateZip() {
   const city = document.getElementById("city").value;
   const state = document.getElementById("State").value;
@@ -116,7 +116,7 @@ function validateCityStateZip() {
   }
 }
 
-// Validate Phone Number
+// this validates the phone number to make sure it have the "(XXX)XXX-XXXX" format with numbers only
 function validatePhone() {
   const phone = document.getElementById("Phone").value;
   const phonePattern = /^$\d{3}$\d{3}-\d{4}$/;
@@ -129,20 +129,37 @@ function validatePhone() {
   }
 }
 
-// Validate Email
+// Format phone number as user types
+function formatPhoneNumber(input) {
+  let value = input.value.replace(/\D/g, '');
+  
+  if (value.length > 0) {
+    if (value.length <= 3) {
+      value = '(' + value;
+    } else if (value.length <= 6) {
+      value = '(' + value.substring(0, 3) + ')' + value.substring(3);
+    } else {
+      value = '(' + value.substring(0, 3) + ')' + value.substring(3, 6) + '-' + value.substring(6, 10);
+    }
+  }
+  
+  input.value = value;
+}
+
+// This helps with validating the email to make sure the user is following the  "name@domain.tdl" format
 function validateEmail() {
   const email = document.getElementById("email").value;
   const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   
   if (!emailPattern.test(email)) {
-    document.getElementById("email_text").innerHTML = "Please enter a valid email address.";
+    document.getElementById("email_text").innerHTML = "Please enter a valid email address in the format name@domain.tdl";
     errorFlag++;
   } else {
     document.getElementById("email_text").innerHTML = "";
   }
 }
 
-// Validate Social Security Number
+// This help validates the SSN
 function validateSSN() {
   const ssn = document.getElementById("ssn").value;
   const ssnPattern = /^\d{3}-\d{2}-\d{4}$/;
@@ -155,7 +172,7 @@ function validateSSN() {
   }
 }
 
-// Format SSN as user types
+// This helps with formatting thte user SSN in the fields of the  form before submission
 function formatSSN(input) {
   let value = input.value.replace(/\D/g, '');
   
@@ -168,23 +185,26 @@ function formatSSN(input) {
   input.value = value;
 }
 
-// Validate User ID
+// This validates the user Id to ensure the user do not put a number first and is a min 5 character and a maximum if 20 characters long. 
 function validateUserID() {
   const userid = document.getElementById("userid").value;
-  const useridPattern = /^[A-Z][A-Za-z0-9_-]{4,19}$/;
+  const useridPattern = /^[A-Za-z][A-Za-z0-9_-]{4,19}$/;
   
   if (!useridPattern.test(userid)) {
+    document.getElementById("userid_text").innerHTML = "User ID must start with a letter and be 5-20 characters long.";
     errorFlag++;
+  } else {
+    document.getElementById("userid_text").innerHTML = "";
   }
 }
 
-// Validate Password Fields
+// This validates password fields for password1 and password2 
 function passwordentry() {
   const password1 = document.getElementById("password1").value;
   const password2 = document.getElementById("password2").value;
   const userid = document.getElementById("userid").value;
   
-  // Check password pattern
+  // This make sure the password is following the required instruction to create a password. 
   const passwordPattern = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
   
   if (!passwordPattern.test(password1)) {
@@ -197,7 +217,7 @@ function passwordentry() {
     document.getElementById("password1_text").innerHTML = "";
   }
   
-  // Check if passwords match
+  // This checks to see if the password2 matches password1 
   if (password1 !== password2) {
     document.getElementById("password2_text").innerHTML = "Passwords do not match.";
     errorFlag++;
@@ -222,7 +242,7 @@ function validateDescription() {
   }
 }
 
-// Count words in description field as user types
+// This helps count the amount of words that the user is typing and making sure it doesn't exceeds 200.
 function countWords(input) {
   const text = input.value.trim();
   
@@ -241,7 +261,7 @@ function countWords(input) {
   }
 }
 
-// Validate Appointment Date and Time
+// this function validatets the Appointment Date and Time before submission
 function validateAppointment() {
   const appointmentDate = document.getElementById("Date").value;
   const appointmentTime = document.getElementById("Time").value;
@@ -251,13 +271,13 @@ function validateAppointment() {
     return;
   }
   
-  // Convert to Date object
+  //this creates date object by combining the appointment date and time and validates it before submission of the form.
   const dateObj = new Date(appointmentDate + "T" + appointmentTime);
   const dayOfWeek = dateObj.getDay();
   const hours = dateObj.getHours();
   const minutes = dateObj.getMinutes();
   
-  // Check if appointment is Monday-Friday
+  // This function checks if appointment is between Monday-Friday and not outside the days of operations. 
   if (dayOfWeek === 0 || dayOfWeek === 6) {
     document.getElementById("Date").setCustomValidity("Appointments are only available Monday through Friday");
     errorFlag++;
@@ -266,7 +286,7 @@ function validateAppointment() {
     document.getElementById("Date").setCustomValidity("");
   }
   
-  // Check if appointment is between 9:00am and 5:00pm
+  // this functions checks if the appointment is between 9:00am and 5:00pm
   if (hours < 9 || (hours === 17 && minutes > 0) || hours > 17) {
     document.getElementById("Time").setCustomValidity("Appointments are only available between 9:00am and 5:00pm");
     errorFlag++;
@@ -275,7 +295,7 @@ function validateAppointment() {
   }
 }
 
-// Function to display form data (for debugging)
+// This is a function that displays form data 
 function getdata1() {
   var formcontents = document.getElementById("signup");
   var formoutput;
@@ -317,7 +337,7 @@ function getdata1() {
   }
 }
 
-// Function to check form before submission
+// This chechs the form to ensure it is validated correctly before the user submits the form. 
 function checkform() {
   errorFlag = 0;
   
@@ -342,12 +362,12 @@ function checkform() {
   }
 }
 
-// Add event listeners when page loads
+// This addes event listeners when the page is loaded by the user. 
 window.onload = function() {
   // Display current date
   document.getElementById("today").innerHTML = new Date().toLocaleDateString();
   
-  // Add input event listeners for DOB to ensure correct format
+  // This is an input for event listeners for DOB to ensure correct format.
   document.getElementById("date").addEventListener("input", function(e) {
     let value = e.target.value.replace(/\D/g, '');
     if (value.length > 4) {
@@ -358,29 +378,28 @@ window.onload = function() {
     e.target.value = value;
   });
   
-  // Add input event listeners for SSN to ensure correct format
+  // This is an input for event listeners for SSN to ensure correct format.
   document.getElementById("ssn").addEventListener("input", function(e) {
     formatSSN(e.target);
   });
   
-  // Add input event listeners for phone to ensure numbers only
+  // This is an input for event listeners for phone to ensure correct format (XXX)XXX-XXXX.
   document.getElementById("Phone").addEventListener("input", function(e) {
-    const phoneInput = e.target.value.replace(/[^0-9()-]/g, '');
-    e.target.value = phoneInput;
+    formatPhoneNumber(e.target);
   });
   
-  // Add input event listener for zip code to ensure numbers only
+  // This is an input for event listener for zip code to ensure numbers only.
   document.getElementById("zip").addEventListener("input", function(e) {
     const zipInput = e.target.value.replace(/[^0-9]/g, '');
     e.target.value = zipInput;
   });
   
-  // Add input event listener for description to count words
+  // Add input event listener for description to count words.
   document.getElementById("description").addEventListener("input", function(e) {
     countWords(e.target);
   });
   
-  // Add change event listener for Date field to validate business days
+  // Add change event listener for Date field to validate business days.
   document.getElementById("Date").addEventListener("change", function(e) {
     const dateObj = new Date(e.target.value);
     const dayOfWeek = dateObj.getDay();
@@ -392,7 +411,7 @@ window.onload = function() {
     }
   });
   
-  // Add change event listener for Time field to validate business hours
+  // Add change event listener for Time field to validate business hours.
   document.getElementById("Time").addEventListener("change", function(e) {
     const timeValue = e.target.value;
     const [hours, minutes] = timeValue.split(':').map(Number);
@@ -414,4 +433,4 @@ window.onload = function() {
   };
 };
 
-/* End of document: homework3.js */
+//End of document: homework3.js
