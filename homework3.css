@@ -1,0 +1,59 @@
+ /*The h1 algins the "jackson's Medical in the center of the header*/
+ h1 {
+    color: limegreen;
+    font-family: 'Times New Roman,Times, serif;'
+    header {background-color: beige;}
+ }
+ /*the header of the body of the form "Pateint Medical Form is shaded skyblue with Time New Romans Font*/
+ body {
+    background-color: beige;
+    color: skyblue
+    font-family: 'Times New Roman, Times, serif;'
+    font-size: '8'
+    }
+    /*the table that have the information is shaded limegreen for contrast with Time New ROmw*/
+   table.form, tr.form, td.form {
+  width: 40%;
+  opacity: 0.9;
+  font-family: 'Times New Roman', Times, serif, Helvetica, sans-serif;
+  background-color:limegreen;
+  padding: 0px;
+  border-spacing: 0px;
+  color:rgb(222, 243, 245);
+  margin: 0 auto;
+  /*Margins set to 0 the center the form in the middle of the page*/ 
+}
+table.output, tr.output, td.output {
+  width: 70%;
+  opacity: 0.9;
+  font-family: 'Times New Roman', Times, serif, Helvetica, sans-serif;
+  background-color:limegreen;
+  padding: 2px;
+  border-spacing: 2px;
+  color:rgb(222, 243, 245);
+}
+td.outputdata {
+  width: 70%;
+  opacity: 0.9;
+  font-family: 'Times New Roman', Times, serif, Helvetica, sans-serif;
+  background-color:white;
+  padding: 2px;
+}
+th.form {
+  font-family: 'Times New Roman', Times, serif, Helvetica, sans-serif;
+  background-color:lightblue;
+  padding: 20px;
+  border-spacing: 30px;
+  color:rgb(222, 243, 245);
+  margin-left: 0 auto;
+  margin-right: 0 auto;
+}
+.textsize1 
+{
+    width:20px
+}
+.textsize5 
+{
+    width:50px
+}
+ 
