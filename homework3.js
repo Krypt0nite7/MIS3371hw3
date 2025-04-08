@@ -191,7 +191,7 @@ function validateUserID() {
   const useridPattern = /^[A-Za-z][A-Za-z0-9_-]{4,19}$/;
   
   if (!useridPattern.test(userid)) {
-    document.getElementById("userid_text").innerHTML = "User ID must start with a letter and be 5-20 characters long.";
+    document.getElementById("userid_text").innerHTML = "User ID must start with a letter and contain only letters, numbers, dashes or underscores. Length must be 5-20 characters.";
     errorFlag++;
   } else {
     document.getElementById("userid_text").innerHTML = "";
