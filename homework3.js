@@ -18,7 +18,7 @@ function processFormSubmission() {
   validateName();
   validateDOB();
   validateAddress();
-  validateCityStateZip();
+  validateStateZip();
   validatePhone();
   validateEmail();
   validateSSN();
@@ -92,17 +92,21 @@ function validateAddress() {
     document.getElementById("addr1_text").innerHTML = "";
   }
 }
-
-// this validates the City, State, and Zip when the user is putting in the information
-function validateCityStateZip() {
+// This validates the city input
   const city = document.getElementById("city").value;
+  if (city.length === 0) {
+    document.getElementById("city_text").innerHTML = "City is required";
+    errorFlag++;
+  } else {
+    document.getElementById("city_text").innerHTML = "";
+  }
+document.getElementById("city").addEventListener("input", validateFields);
+// this validates the State, and Zip when the user is putting in the information
+function validateStateZip() {
   const state = document.getElementById("State").value;
   const zip = document.getElementById("zip").value;
   const zipPattern = /^[0-9]{5}$/;
   
-  if (city.length === 0) {
-    errorFlag++;
-  }
   
   if (state === "") {
     errorFlag++;
@@ -197,12 +201,13 @@ function validateUserID() {
     document.getElementById("userid_text").innerHTML = "";
   }
 }
+document.getElementById("userid").addEventListener("input", validateFields);
 
 // This validates password fields for password1 and password2 
 function passwordentry() {
   const password1 = document.getElementById("password1").value;
   const password2 = document.getElementById("password2").value;
-  const userid = document.getElementById("userid").value;
+  const passwordPattern = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
   
   // This make sure the password is following the required instruction to create a password. 
   const passwordPattern = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
@@ -216,7 +221,7 @@ function passwordentry() {
   } else {
     document.getElementById("password1_text").innerHTML = "";
   }
-  
+    document.getElementById("password1").addEventListener("input", validateFields);
   // This checks to see if the password2 matches password1 
   if (password1 !== password2) {
     document.getElementById("password2_text").innerHTML = "Passwords do not match.";
@@ -224,8 +229,9 @@ function passwordentry() {
   } else {
     document.getElementById("password2_text").innerHTML = "";
   }
+    return errorFlag === 0;
 }
-
+   document.getElementById("password2").addEventListener("input", validateFields);
 // Validate description field (no more than 200 words)
 function validateDescription() {
   const description = document.getElementById("description").value.trim();
