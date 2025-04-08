@@ -11,7 +11,6 @@ let errorFlag = 0;
 
 // Function to handle form submission
 function processFormSubmission() {
-  // Reset error flag
   errorFlag = 0;
   
   // This helps validate all form fields
@@ -92,26 +91,23 @@ function validateAddress() {
     document.getElementById("addr1_text").innerHTML = "";
   }
 }
-// This validates the city input
-  const city = document.getElementById("city").value;
-  if (city.length === 0) {
-    document.getElementById("city_text").innerHTML = "City is required";
-    errorFlag++;
-  } else {
-    document.getElementById("city_text").innerHTML = "";
-  }
-document.getElementById("city").addEventListener("input", validateFields);
 // this validates the State, and Zip when the user is putting in the information
 function validateStateZip() {
   const state = document.getElementById("State").value;
   const zip = document.getElementById("zip").value;
+  const city = document.getElementById("city").value;
   const zipPattern = /^[0-9]{5}$/;
   
   
   if (state === "") {
     errorFlag++;
   }
-  
+  if (city.length === 0) {
+    document.getElementById("city_text").innerHTML = "City is required";
+    errorFlag++;
+  } else {
+    document.getElementById("city_text").innerHTML = "";
+  }
   if (!zipPattern.test(zip)) {
     errorFlag++;
     document.getElementById("zip").setCustomValidity("Zip code must be exactly 5 digits");
@@ -119,7 +115,7 @@ function validateStateZip() {
     document.getElementById("zip").setCustomValidity("");
   }
 }
-
+document.getElementById("city").addEventListener("input", validateFields);
 // this validates the phone number to make sure it have the "(XXX)XXX-XXXX" format with numbers only
 function validatePhone() {
   const phone = document.getElementById("Phone").value;
@@ -205,12 +201,14 @@ document.getElementById("userid").addEventListener("input", validateFields);
 
 // This validates password fields for password1 and password2 
 function passwordentry() {
+  const userid = document.getElementById("userid").value;
   const password1 = document.getElementById("password1").value;
   const password2 = document.getElementById("password2").value;
+   // This make sure the password is following the required instruction to create a password. 
   const passwordPattern = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
   
-  // This make sure the password is following the required instruction to create a password. 
-  const passwordPattern = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
+
+
   
   if (!passwordPattern.test(password1)) {
     document.getElementById("password1_text").innerHTML = "Password must contain at least one number, one uppercase letter, one lowercase letter, and be at least 8 characters long.";
