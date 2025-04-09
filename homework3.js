@@ -324,6 +324,70 @@ document.getElementById("ssn").addEventListener("input", function(e) {
 document.getElementById("password1").addEventListener("input", validatePasswords);
 document.getElementById("password2").addEventListener("input", validatePasswords);
 
+function getdata1() {
+    // Get form elements
+    let firstname = document.getElementById("FirstName").value;
+    let middleinit = document.getElementById("MiddleInit").value;
+    let lastname = document.getElementById("LastName").value;
+    let dob = document.getElementById("date").value;
+    let addr1 = document.getElementById("addr1").value;
+    let addr2 = document.getElementById("addr2").value;
+    let city = document.getElementById("city").value;
+    let state = document.getElementById("State").value;
+    let zip = document.getElementById("zip").value;
+    let phone = document.getElementById("Phone").value;
+    let email = document.getElementById("email").value;
+    let ssn = document.getElementById("ssn").value;
+    let userid = document.getElementById("userid").value;
+    let password1 = document.getElementById("password1").value;
+    let password2 = document.getElementById("password2").value;
+    let birdFlu = document.querySelector('input[name="fav_language"]:checked');
+    let symptoms = [];
+    let appointmentDate = document.getElementById("Date").value;
+    let appointmentTime = document.getElementById("Time").value;
+    let painScale = document.getElementById("scale").value;
+    let description = document.getElementById("description").value;
+
+    // Get selected symptoms
+    for(let i = 1; i <= 5; i++) {
+        let symptom = document.getElementById("symptom" + i);
+        if(symptom && symptom.checked) {
+            symptoms.push(symptom.value);
+        }
+    }
+
+    // Format the data for display
+    let outputDiv = document.getElementById("outputformdata");
+    outputDiv.style.display = "block";
+    
+    // Create formatted output
+    let output = `
+        <h3>Patient Information Summary:</h3>
+        <p>Name: ${firstname} ${middleinit}. ${lastname}</p>
+        <p>Date of Birth: ${dob}</p>
+        <p>Address: ${addr1}</p>
+        ${addr2 ? `<p>Address 2: ${addr2}</p>` : ''}
+        <p>Location: ${city}, ${state} ${zip}</p>
+        <p>Contact: ${phone} | ${email}</p>
+        <p>SSN: ${ssn}</p>
+        <p>User ID: ${userid}</p>
+        <p>Bird Flu Status: ${birdFlu ? birdFlu.value : 'Not specified'}</p>
+        <p>Symptoms: ${symptoms.length > 0 ? symptoms.join(", ") : 'None selected'}</p>
+        <p>Appointment: ${appointmentDate} at ${appointmentTime}</p>
+        <p>Pain Level: ${painScale}/10 ${getPainEmoji(painScale)}</p>
+        <p>Description: ${description}</p>
+    `;
+
+    outputDiv.innerHTML = output;
+}
+
+// Add event listener for pain scale slider
+document.getElementById("scale").addEventListener("input", function() {
+    let value = this.value;
+    document.getElementById("rangedisplay").innerHTML = `${value} ${getPainEmoji(value)}`;
+});
+
+
 // Initialize form data display
 window.onload = function() {
   document.getElementById("today").innerHTML = new Date().toLocaleDateString();
