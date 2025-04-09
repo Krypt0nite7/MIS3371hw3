@@ -23,7 +23,7 @@
   margin: 0 auto;
   /*Margins set to 0 the center the form in the middle of the page*/ 
 }
-table.output, tr.output, td.output {
+table.outputformdata, tr.outputformdata, td.outputformdata {
   width: 70%;
   opacity: 0.9;
   font-family: 'Times New Roman', Times, serif, Helvetica, sans-serif;
@@ -32,7 +32,7 @@ table.output, tr.output, td.output {
   border-spacing: 2px;
   color:rgb(222, 243, 245);
 }
-td.outputdata {
+td.outputformdata {
   width: 70%;
   opacity: 0.9;
   font-family: 'Times New Roman', Times, serif, Helvetica, sans-serif;
