@@ -65,10 +65,10 @@ function validateName() {
   document.getElementById("name_text").innerHTML = "";
 }
 
-// This makesure the DOB is in the format of "MM/DD/YYYY" with numbers only before submission of the  form
+// This makesure the DOB is in the format of "MM/DD/YYYY" with numbers only before submission of the form
 function validateDOB() {
   const dobInput = document.getElementById("date").value;
-  const dobPattern = /^(0[1-9]|1[0-2])\/(0[1-9]|[12][0-9]|3[01])\/\d{4}$/;
+  const dobPattern = /^(0[1-9]|1[0-2])\/([0-2][0-9]|3[0-1])\/\d{4}$/;
   
   if (!dobPattern.test(dobInput)) {
     document.getElementById("date").setCustomValidity("Please enter a valid date in MM/DD/YYYY format");
@@ -91,6 +91,7 @@ function validateAddress() {
     document.getElementById("addr1_text").innerHTML = "";
   }
 }
+
 // this validates the State, and Zip when the user is putting in the information
 function validateStateZip() {
   const state = document.getElementById("State").value;
@@ -98,16 +99,17 @@ function validateStateZip() {
   const city = document.getElementById("city").value;
   const zipPattern = /^[0-9]{5}$/;
   
-  
   if (state === "") {
     errorFlag++;
   }
+  
   if (city.length === 0) {
     document.getElementById("city_text").innerHTML = "City is required";
     errorFlag++;
   } else {
     document.getElementById("city_text").innerHTML = "";
   }
+  
   if (!zipPattern.test(zip)) {
     errorFlag++;
     document.getElementById("zip").setCustomValidity("Zip code must be exactly 5 digits");
@@ -115,7 +117,7 @@ function validateStateZip() {
     document.getElementById("zip").setCustomValidity("");
   }
 }
-document.getElementById("city").addEventListener("input", validateFields);
+
 // this validates the phone number to make sure it have the "(XXX)XXX-XXXX" format with numbers only
 function validatePhone() {
   const phone = document.getElementById("Phone").value;
@@ -146,7 +148,7 @@ function formatPhoneNumber(input) {
   input.value = value;
 }
 
-// This helps with validating the email to make sure the user is following the  "name@domain.tdl" format
+// This helps with validating the email to make sure the user is following the "name@domain.tdl" format
 function validateEmail() {
   const email = document.getElementById("email").value;
   const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -172,7 +174,7 @@ function validateSSN() {
   }
 }
 
-// This helps with formatting thte user SSN in the fields of the  form before submission
+// This helps with formatting the user SSN in the fields of the form before submission
 function formatSSN(input) {
   let value = input.value.replace(/\D/g, '');
   
@@ -185,7 +187,7 @@ function formatSSN(input) {
   input.value = value;
 }
 
-// This validates the user Id to ensure the user do not put a number first and is a min 5 character and a maximum if 20 characters long. 
+// This validates the user Id to ensure the user do not put a number first and is a min 5 character and a maximum if 20 characters long.
 function validateUserID() {
   const userid = document.getElementById("userid").value;
   const useridPattern = /^[A-Za-z][A-Za-z0-9_-]{4,19}$/;
@@ -197,18 +199,15 @@ function validateUserID() {
     document.getElementById("userid_text").innerHTML = "";
   }
 }
-document.getElementById("userid").addEventListener("input", validateFields);
 
 // This validates password fields for password1 and password2 
-function passwordentry() {
+function validatePasswords() {
   const userid = document.getElementById("userid").value;
   const password1 = document.getElementById("password1").value;
   const password2 = document.getElementById("password2").value;
-   // This make sure the password is following the required instruction to create a password. 
-  const passwordPattern = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
   
-
-
+  // This make sure the password is following the required instruction to create a password.
+  const passwordPattern = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
   
   if (!passwordPattern.test(password1)) {
     document.getElementById("password1_text").innerHTML = "Password must contain at least one number, one uppercase letter, one lowercase letter, and be at least 8 characters long.";
@@ -219,17 +218,16 @@ function passwordentry() {
   } else {
     document.getElementById("password1_text").innerHTML = "";
   }
-    document.getElementById("password1").addEventListener("input", validateFields);
-  // This checks to see if the password2 matches password1 
+  
+  // This checks to see if the password2 matches password1
   if (password1 !== password2) {
     document.getElementById("password2_text").innerHTML = "Passwords do not match.";
     errorFlag++;
   } else {
     document.getElementById("password2_text").innerHTML = "";
   }
-    return errorFlag === 0;
 }
-   document.getElementById("password2").addEventListener("input", validateFields);
+
 // Validate description field (no more than 200 words)
 function validateDescription() {
   const description = document.getElementById("description").value.trim();
@@ -265,7 +263,7 @@ function countWords(input) {
   }
 }
 
-// this function validatets the Appointment Date and Time before submission
+// this function validates the Appointment Date and Time before submission
 function validateAppointment() {
   const appointmentDate = document.getElementById("Date").value;
   const appointmentTime = document.getElementById("Time").value;
@@ -275,13 +273,13 @@ function validateAppointment() {
     return;
   }
   
-  //this creates date object by combining the appointment date and time and validates it before submission of the form.
+  // this creates date object by combining the appointment date and time and validates it before submission of the form.
   const dateObj = new Date(appointmentDate + "T" + appointmentTime);
   const dayOfWeek = dateObj.getDay();
   const hours = dateObj.getHours();
   const minutes = dateObj.getMinutes();
   
-  // This function checks if appointment is between Monday-Friday and not outside the days of operations. 
+  // This function checks if appointment is between Monday-Friday and not outside the days of operations.
   if (dayOfWeek === 0 || dayOfWeek === 6) {
     document.getElementById("Date").setCustomValidity("Appointments are only available Monday through Friday");
     errorFlag++;
@@ -299,142 +297,35 @@ function validateAppointment() {
   }
 }
 
-// This is a function that displays form data 
-function getdata1() {
-  var formcontents = document.getElementById("signup");
-  var formoutput;
-  var datatype;
-  var i;
-  formoutput = "<table class='output'><th>Dataname</th><th>Type</th><th>Value</th>";
-  for (i = 0; i < formcontents.length; i++) {
-    datatype = formcontents.elements[i].type;
-    switch (datatype) {
-      case "checkbox":
-        if (formcontents.elements[i].checked) {
-          formoutput = formoutput + "<tr><td align='right'>" + formcontents.elements[i].name + "</td>";
-          formoutput = formoutput + "<td align='right'>" + datatype + "</td>";
-          formoutput = formoutput + "<td class='outputdata'>Checked</td></tr>";
-        }
-        break;
-      case "radio":
-        if (formcontents.elements[i].checked) {
-          formoutput = formoutput + "<tr><td align='right'>" + formcontents.elements[i].name + "</td>";
-          formoutput = formoutput + "<td align='right'>" + datatype + "</td>";
-          formoutput = formoutput + "<td class='outputdata'>" + formcontents.elements[i].value + "</td></tr>";
-        }
-        break;
-      case "button":
-      case "submit":
-      case "reset":
-        break;
-      default:
-        formoutput = formoutput + "<tr><td align='right'>" + formcontents.elements[i].name + "</td>";
-        formoutput = formoutput + "<td align='right'>" + datatype + "</td>";
-        formoutput = formoutput + "<td class='outputdata'>" + formcontents.elements[i].value + "</td></tr>";
-    }
-  }
+// Add required attribute to specified fields
+document.getElementById("city").required = true;
+document.getElementById("Phone").required = true;
+document.getElementById("ssn").required = true;
+document.getElementById("password1").required = true; 
+document.getElementById("password2").required = true;
 
-  if (formoutput.length > 0) {
-    formoutput = formoutput + "</table>";
-    document.getElementById("outputformdata").innerHTML = formoutput;
-    document.getElementById("outputformdata").style.display = "block";
-  }
-}
+// Add appropriate placeholders
+document.getElementById("city").placeholder = "City (required)";
+document.getElementById("Phone").placeholder = "(XXX)XXX-XXXX";
+document.getElementById("ssn").placeholder = "XXX-XX-XXXX";
+document.getElementById("password1").placeholder = "Required";
+document.getElementById("password2").placeholder = "Required";
 
-// This chechs the form to ensure it is validated correctly before the user submits the form. 
-function checkform() {
-  errorFlag = 0;
-  
-  validateName();
-  validateDOB();
-  validateAddress();
-  validateCityStateZip();
+// Add event listeners for validation
+document.getElementById("city").addEventListener("input", validateStateZip);
+document.getElementById("Phone").addEventListener("input", function(e) {
+  formatPhoneNumber(e.target);
   validatePhone();
-  validateEmail();
+});
+document.getElementById("ssn").addEventListener("input", function(e) {
+  formatSSN(e.target);
   validateSSN();
-  validateUserID();
-  passwordentry();
-  validateAppointment();
-  validateDescription();
-  
-  if (errorFlag > 0) {
-    alert("Please fix the indicated errors!");
-    document.getElementById("submit").disabled = true;
-  } else {
-    document.getElementById("submit").disabled = false;
-    alert("Form validation successful! You can submit the form now.");
-  }
-}
+});
+document.getElementById("password1").addEventListener("input", validatePasswords);
+document.getElementById("password2").addEventListener("input", validatePasswords);
 
-// This addes event listeners when the page is loaded by the user. 
+// Initialize form data display
 window.onload = function() {
-  // Display current date
   document.getElementById("today").innerHTML = new Date().toLocaleDateString();
-  
-  // This is an input for event listeners for DOB to ensure correct format.
-  document.getElementById("date").addEventListener("input", function(e) {
-    let value = e.target.value.replace(/\D/g, '');
-    if (value.length > 4) {
-      value = value.substring(0, 2) + '/' + value.substring(2, 4) + '/' + value.substring(4, 8);
-    } else if (value.length > 2) {
-      value = value.substring(0, 2) + '/' + value.substring(2);
-    }
-    e.target.value = value;
-  });
-  
-  // This is an input for event listeners for SSN to ensure correct format.
-  document.getElementById("ssn").addEventListener("input", function(e) {
-    formatSSN(e.target);
-  });
-  
-  // This is an input for event listeners for phone to ensure correct format (XXX)XXX-XXXX.
-  document.getElementById("Phone").addEventListener("input", function(e) {
-    formatPhoneNumber(e.target);
-  });
-  
-  // This is an input for event listener for zip code to ensure numbers only.
-  document.getElementById("zip").addEventListener("input", function(e) {
-    const zipInput = e.target.value.replace(/[^0-9]/g, '');
-    e.target.value = zipInput;
-  });
-  
-  // Add input event listener for description to count words.
-  document.getElementById("description").addEventListener("input", function(e) {
-    countWords(e.target);
-  });
-  
-  // Add change event listener for Date field to validate business days.
-  document.getElementById("Date").addEventListener("change", function(e) {
-    const dateObj = new Date(e.target.value);
-    const dayOfWeek = dateObj.getDay();
-    
-    if (dayOfWeek === 0 || dayOfWeek === 6) {
-      e.target.setCustomValidity("Appointments are only available Monday through Friday");
-    } else {
-      e.target.setCustomValidity("");
-    }
-  });
-  
-  // Add change event listener for Time field to validate business hours.
-  document.getElementById("Time").addEventListener("change", function(e) {
-    const timeValue = e.target.value;
-    const [hours, minutes] = timeValue.split(':').map(Number);
-    
-    if (hours < 9 || (hours === 17 && minutes > 0) || hours > 17) {
-      e.target.setCustomValidity("Appointments are only available between 9:00am and 5:00pm");
-    } else {
-      e.target.setCustomValidity("");
-    }
-  });
-  
-  // Setup pain scale slider
-  var slider = document.getElementById("scale");
-  var output = document.getElementById("rangedisplay");
-  output.innerHTML = slider.value;
-
-  slider.oninput = function() {
-    output.innerHTML = this.value;
-  };
 };
 
-//End of document: homework3.js
