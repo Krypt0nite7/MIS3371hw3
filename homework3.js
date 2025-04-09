@@ -326,38 +326,65 @@ document.getElementById("password2").addEventListener("input", validatePasswords
 
 function getdata1() {
     // Get form elements
-    let firstname = document.getElementById("FirstName").value;
-    let middleinit = document.getElementById("MiddleInit").value;
-    let lastname = document.getElementById("LastName").value;
-    let dob = document.getElementById("date").value;
-    let addr1 = document.getElementById("addr1").value;
-    let addr2 = document.getElementById("addr2").value;
-    let city = document.getElementById("city").value;
-    let state = document.getElementById("State").value;
-    let zip = document.getElementById("zip").value;
-    let phone = document.getElementById("Phone").value;
-    let email = document.getElementById("email").value;
-    let ssn = document.getElementById("ssn").value;
-    let userid = document.getElementById("userid").value;
-    let password1 = document.getElementById("password1").value;
-    let password2 = document.getElementById("password2").value;
-    let birdFlu = document.querySelector('input[name="fav_language"]:checked');
-    let symptoms = [];
-    let appointmentDate = document.getElementById("Date").value;
-    let appointmentTime = document.getElementById("Time").value;
-    let painScale = document.getElementById("scale").value;
-    let description = document.getElementById("description").value;
-
-    // Get selected symptoms
-    for(let i = 1; i <= 5; i++) {
-        let symptom = document.getElementById("symptom" + i);
-        if(symptom && symptom.checked) {
+    const formData = {
+        "First Name": document.getElementById("FirstName").value,
+        "Middle Initial": document.getElementById("MiddleInit").value,
+        "Last Name": document.getElementById("LastName").value,
+        "Date of Birth": document.getElementById("date").value,
+        "Address Line 1": document.getElementById("addr1").value,
+        "Address Line 2": document.getElementById("addr2").value,
+        "City": document.getElementById("city").value,
+        "State": document.getElementById("State").value,
+        "Zip Code": document.getElementById("zip").value,
+        "Phone": document.getElementById("Phone").value,
+        "Email": document.getElementById("email").value,
+        "SSN": document.getElementById("ssn").value,
+        "User ID": document.getElementById("userid").value,
+        "Appointment Date": document.getElementById("Date").value,
+        "Appointment Time": document.getElementById("Time").value,
+        "Pain Scale": document.getElementById("scale").value,
+        "Description": document.getElementById("description").value
+    };
+         // Get Bird Flu response
+    const birdFluResponse = document.querySelector('input[name="fav_language"]:checked');
+    if (birdFluResponse) {
+        formData["Bird Flu Status"] = birdFluResponse.value;
+    }
+     // Get selected symptoms
+    const symptoms = [];
+    for (let i = 1; i <= 5; i++) {
+        const symptom = document.getElementById(`symptom${i}`);
+        if (symptom && symptom.checked) {
             symptoms.push(symptom.value);
         }
     }
+    if (symptoms.length > 0) {
+        formData["Symptoms"] = symptoms.join(", ");
+    }
 
-// Initialize form data display
+    // Create output HTML
+    let outputHTML = "<div style='background-color: #f0f0f0; padding: 15px; border-radius: 5px;'>";
+    outputHTML += "<h3 style='color: #333; margin-bottom: 15px;'>Form Data Summary:</h3>";
+
+    // Add each form field to the output
+    for (const [key, value] of Object.entries(formData)) {
+        if (value && value.length > 0 && key !== "password1" && key !== "password2") {
+            outputHTML += `<p style='margin: 5px 0;'><strong>${key}:</strong> ${value}</p>`;
+        }
+    }
+    outputHTML += "</div>";
+
+    // Display the output
+    const outputDiv = document.getElementById("outputformdata");
+    outputDiv.innerHTML = outputHTML;
+    outputDiv.style.display = "block";
+}
+
+// Add event listener for the Get Data button
+document.getElementById("getdata").addEventListener("click", getdata1);
+
+// Initialize form data display on page load
 window.onload = function() {
-  document.getElementById("today").innerHTML = new Date().toLocaleDateString();
+    document.getElementById("today").innerHTML = new Date().toLocaleDateString();
+    document.getElementById("outputformdata").style.display = "none";
 };
-
