@@ -159,8 +159,7 @@ Another thing I noticed was that the "id" from the html pages wasn't identical t
     <tr class="form">  <!--New table Row-->
         <td align="left"> <!--New Table Data -->
             <label for="city">City,</label> <!--This request for a City in the form and is required-->
-            <label for="state">State</label><!--This request for the State in the form with options show below and is required-->
-                <input type="text" 
+                  <input type="text" 
                     size="10" 
                     maxlength="25" 
                     id="city" 
@@ -169,7 +168,8 @@ Another thing I noticed was that the "id" from the html pages wasn't identical t
                     oninput="this.setCustomValidity('')"
                     placeholder="Anytown (req'd)"
                      > <!-- the text length for city have a maximum of 25 characters and is validated by java-->
-                    <select id="State" name="State" required> <!--This is mandatory for the patient to select a state in the form they reside in-->
+            <label for="state">State</label><!--This request for the State in the form with options show below and is required-->
+                   <select id="State" name="State" required> <!--This is mandatory for the patient to select a state in the form they reside in-->
                         <option value="">Select a State</option>
                         <option value="AL">Alabama</option>
                         <option value="AK">Alaska</option>
