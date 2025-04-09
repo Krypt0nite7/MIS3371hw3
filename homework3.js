@@ -356,38 +356,6 @@ function getdata1() {
         }
     }
 
-    // Format the data for display
-    let outputDiv = document.getElementById("outputformdata");
-    outputDiv.style.display = "block";
-    
-    // Create formatted output
-    let output = `
-        <h3>Patient Information Summary:</h3>
-        <p>Name: ${firstname} ${middleinit}. ${lastname}</p>
-        <p>Date of Birth: ${dob}</p>
-        <p>Address: ${addr1}</p>
-        ${addr2 ? `<p>Address 2: ${addr2}</p>` : ''}
-        <p>Location: ${city}, ${state} ${zip}</p>
-        <p>Contact: ${phone} | ${email}</p>
-        <p>SSN: ${ssn}</p>
-        <p>User ID: ${userid}</p>
-        <p>Bird Flu Status: ${birdFlu ? birdFlu.value : 'Not specified'}</p>
-        <p>Symptoms: ${symptoms.length > 0 ? symptoms.join(", ") : 'None selected'}</p>
-        <p>Appointment: ${appointmentDate} at ${appointmentTime}</p>
-        <p>Pain Level: ${painScale}/10 ${getPainEmoji(painScale)}</p>
-        <p>Description: ${description}</p>
-    `;
-
-    outputDiv.innerHTML = output;
-}
-
-// Add event listener for pain scale slider
-document.getElementById("scale").addEventListener("input", function() {
-    let value = this.value;
-    document.getElementById("rangedisplay").innerHTML = `${value} ${getPainEmoji(value)}`;
-});
-
-
 // Initialize form data display
 window.onload = function() {
   document.getElementById("today").innerHTML = new Date().toLocaleDateString();
