@@ -297,21 +297,21 @@ function validateAppointment() {
   }
 }
 
-// Add required attribute to specified fields
+// These are to ensure that the user is filling out the required fields on the form.
 document.getElementById("city").required = true;
 document.getElementById("Phone").required = true;
 document.getElementById("ssn").required = true;
 document.getElementById("password1").required = true; 
 document.getElementById("password2").required = true;
 
-// Add appropriate placeholders
+// These are place holders of te forn for users to see when filling out the form
 document.getElementById("city").placeholder = "City (required)";
 document.getElementById("Phone").placeholder = "(XXX)XXX-XXXX";
 document.getElementById("ssn").placeholder = "XXX-XX-XXXX";
 document.getElementById("password1").placeholder = "Required";
 document.getElementById("password2").placeholder = "Required";
 
-// Add event listeners for validation
+// This is a event listener for city, phone, ssn, password1 and password2.
 document.getElementById("city").addEventListener("input", validateStateZip);
 document.getElementById("Phone").addEventListener("input", function(e) {
   formatPhoneNumber(e.target);
@@ -325,7 +325,7 @@ document.getElementById("password1").addEventListener("input", validatePasswords
 document.getElementById("password2").addEventListener("input", validatePasswords);
 
 function getdata1() {
-    // Get form elements
+    // This gets data from the form to put in the form data table.
     const formData = {
         "First Name": document.getElementById("FirstName").value,
         "Middle Initial": document.getElementById("MiddleInit").value,
@@ -345,12 +345,12 @@ function getdata1() {
         "Pain Scale": document.getElementById("scale").value,
         "Description": document.getElementById("description").value
     };
-         // Get Bird Flu response
+         // This gets Bird Flu response
     const birdFluResponse = document.querySelector('input[name="fav_language"]:checked');
     if (birdFluResponse) {
         formData["Bird Flu Status"] = birdFluResponse.value;
     }
-     // Get selected symptoms
+     // This gets selected symptoms
     const symptoms = [];
     for (let i = 1; i <= 5; i++) {
         const symptom = document.getElementById(`symptom${i}`);
@@ -366,7 +366,7 @@ function getdata1() {
     let outputHTML = "<div style='background-color: #f0f0f0; padding: 15px; border-radius: 5px;'>";
     outputHTML += "<h3 style='color: #333; margin-bottom: 15px;'>Form Data Summary:</h3>";
 
-    // Add each form field to the output
+    // This add each form field to the output
     for (const [key, value] of Object.entries(formData)) {
         if (value && value.length > 0 && key !== "password1" && key !== "password2") {
             outputHTML += `<p style='margin: 5px 0;'><strong>${key}:</strong> ${value}</p>`;
@@ -374,16 +374,16 @@ function getdata1() {
     }
     outputHTML += "</div>";
 
-    // Display the output
+    // this display the output of information from the form.
     const outputDiv = document.getElementById("outputformdata");
     outputDiv.innerHTML = outputHTML;
     outputDiv.style.display = "block";
 }
 
-// Add event listener for the Get Data button
+// this adds event listener for the Get Data button
 document.getElementById("getdata").addEventListener("click", getdata1);
 
-// Initialize form data display on page load
+// This initialize the form data displayed the on page load
 window.onload = function() {
     document.getElementById("today").innerHTML = new Date().toLocaleDateString();
     document.getElementById("outputformdata").style.display = "none";
