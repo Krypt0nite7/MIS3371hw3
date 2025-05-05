@@ -387,4 +387,74 @@ document.getElementById("getdata").addEventListener("click", getdata1);
 window.onload = function() {
     document.getElementById("today").innerHTML = new Date().toLocaleDateString();
     document.getElementById("outputformdata").style.display = "none";
+ // cookies.js - Simple cookie functions
+function setCookie(name, value, days) {
+  var expires = "";
+  if (days) {
+    var date = new Date();
+    date.setTime(date.getTime() + (days*24*60*60*1000));
+    expires = "; expires=" + date.toUTCString();
+  }
+  document.cookie = name + "=" + value + expires + "; path=/";
+}
+
+function getCookie(name) {
+  var nameEQ = name + "=";
+  var ca = document.cookie.split(';');
+  for(var i=0; i < ca.length; i++) {
+    var c = ca[i];
+    while (c.charAt(0) == ' ') c = c.substring(1);
+    if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
+  }
+  return null;
+}
+// welcome.js - Handle welcome message
+function updateWelcome() {
+  var firstName = document.getElementById("FirstName").value;
+  var welcomeText = "Welcome!";
+  
+  if (firstName) {
+    welcomeText = "Welcome back " + firstName;
+    if (firstName.toLowerCase() === "rontray") {
+      welcomeText = "Welcome back Rontray!";
+    }
+  }
+  
+  // Update header iframe content
+  try {
+    var headerFrame = document.getElementById("headerFrame");
+    if (headerFrame.contentDocument) {
+      var welcomeDiv = headerFrame.contentDocument.getElementById("welcomeMessage");
+      if (welcomeDiv) {
+        welcomeDiv.textContent = welcomeText;
+      }
+    }
+  } catch(e) {
+    console.log("Could not update welcome message");
+  }
+}
+
+// Load saved name on startup
+window.onload = function() {
+  var savedName = getCookie("firstName");
+  if (savedName) {
+    document.getElementById("FirstName").value = savedName;
+    document.getElementById("rememberMe").checked = true;
+    updateWelcome();
+  }
+  
+  // Add event listener to form submission
+  document.getElementById("signup").onsubmit = function() {
+    if (document.getElementById("rememberMe").checked) {
+      setCookie("firstName", document.getElementById("FirstName").value, 30);
+    } else {
+      setCookie("firstName", "", -1);
+    }
+    return true;
+  };
+  
+  // Update welcome message when name is typed
+  document.getElementById("FirstName").addEventListener("input", updateWelcome);
 };
+
+}
