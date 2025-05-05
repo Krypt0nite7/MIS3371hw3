@@ -503,5 +503,20 @@ Another thing I noticed was that the "id" from the html pages wasn't identical t
 </head>
 
 </body>
+ <!-- Add this iframe at the bottom of the page, just before the closing body tag -->
+<div id="username-iframe-container" style="position: fixed; bottom: 0; left: 0; width: 100%; background-color: rgba(255, 255, 255, 0.9); border-top: 2px solid skyblue; z-index: 1000; padding: 10px; box-shadow: 0px -2px 10px rgba(0,0,0,0.1);">
+  <iframe id="usernameFrame" style="width: 100%; border: none; height: 60px;"></iframe>
+</div>
+
+<!-- Update the remember me checkbox area with better styling -->
+<tr class="form">
+  <td align="left">
+    <div style="display: flex; align-items: center; margin: 10px 0;">
+      <input type="checkbox" id="rememberMe" name="rememberMe">
+      <label for="rememberMe" style="margin-left: 5px;">Remember my username for 27 hours</label>
+    </div>
+  </td>
+</tr>
+
 <!-- End of file: homework3.html -->
 </html>
