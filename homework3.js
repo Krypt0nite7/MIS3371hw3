@@ -6,6 +6,14 @@
  Purpose: Validate data from the patient medical form with enhanced validation for phone, email, and user ID
 */
 
+/*
+ Name: Deshunn Jackson
+ File: homework3.js
+ Date Created: 03/03/2025
+ Date Updated: 03/21/2025
+ Purpose: Validate data from the patient medical form with enhanced validation for phone, email, and user ID
+*/
+
 // Initialize error flag
 let errorFlag = 0;
 
@@ -32,7 +40,85 @@ function processFormSubmission() {
     return false;
   }
   
+  // Handle remember username functionality
+  const username = document.getElementById('userid').value;
+  const rememberMe = document.getElementById('rememberMe').checked;
+  
+  if (rememberMe && username) {
+    setUsernameCookie(username, 27); // Remember for 27 hours
+  } else {
+    deleteUsernameCookie();
+  }
+  
   return true;
+}
+
+// Cookie functions for username persistence
+function setUsernameCookie(username, hours) {
+  const date = new Date();
+  date.setTime(date.getTime() + (hours * 60 * 60 * 1000));
+  const expires = "; expires=" + date.toUTCString();
+  document.cookie = "username=" + encodeURIComponent(username) + expires + "; path=/";
+}
+
+function getUsernameCookie() {
+  const nameEQ = "username=";
+  const cookies = document.cookie.split(';');
+  for(let i = 0; i < cookies.length; i++) {
+    let cookie = cookies[i];
+    while (cookie.charAt(0) === ' ') {
+      cookie = cookie.substring(1);
+    }
+    if (cookie.indexOf(nameEQ) === 0) {
+      return decodeURIComponent(cookie.substring(nameEQ.length));
+    }
+  }
+  return null;
+}
+
+function deleteUsernameCookie() {
+  document.cookie = "username=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+}
+
+// Update the iframe content with the current username
+function updateUsernameIframe(username) {
+  const iframe = document.getElementById('usernameFrame');
+  if (iframe) {
+    const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+    iframeDoc.open();
+    iframeDoc.write(`
+      <!DOCTYPE html>
+      <html>
+      <head>
+        <style>
+          body {
+            font-family: "Times New Roman", Times, serif;
+            margin: 0;
+            padding: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background-color: beige;
+          }
+          .username-display {
+            font-size: 16px;
+            color: #333;
+          }
+          .username-value {
+            font-weight: bold;
+            color: #0066cc;
+          }
+        </style>
+      </head>
+      <body>
+        <div class="username-display">
+          Current User: <span class="username-value">\${username || 'Not logged in'}</span>
+        </div>
+      </body>
+      </html>
+    `);
+    iframeDoc.close();
+  }
 }
 
 // this help validates the First, Middle Initial, and Last Name
@@ -68,7 +154,7 @@ function validateName() {
 // This makesure the DOB is in the format of "MM/DD/YYYY" with numbers only before submission of the form
 function validateDOB() {
   const dobInput = document.getElementById("date").value;
-  const dobPattern = /^(0[1-9]|1[0-2])\/([0-2][0-9]|3[0-1])\/\d{4}$/;
+  const dobPattern = /^(0[1-9]|1[0-2])\/([0-2][0-9]|3[0-1])\/\d{4}\$/;
   
   if (!dobPattern.test(dobInput)) {
     document.getElementById("date").setCustomValidity("Please enter a valid date in MM/DD/YYYY format");
@@ -97,7 +183,7 @@ function validateStateZip() {
   const state = document.getElementById("State").value;
   const zip = document.getElementById("zip").value;
   const city = document.getElementById("city").value;
-  const zipPattern = /^[0-9]{5}$/;
+  const zipPattern = /^[0-9]{5}\$/;
   
   if (state === "") {
     errorFlag++;
@@ -121,7 +207,7 @@ function validateStateZip() {
 // this validates the phone number to make sure it have the "(XXX)XXX-XXXX" format with numbers only
 function validatePhone() {
   const phone = document.getElementById("Phone").value;
-  const phonePattern = /^$\d{3}$\d{3}-\d{4}$/;
+  const phonePattern = /^\(\d{3}\)\d{3}-\d{4}\$/;
   
   if (!phonePattern.test(phone)) {
     document.getElementById("phone_text").innerHTML = "Phone number must be in format (XXX)XXX-XXXX with numbers only.";
@@ -151,7 +237,7 @@ function formatPhoneNumber(input) {
 // This helps with validating the email to make sure the user is following the "name@domain.tdl" format
 function validateEmail() {
   const email = document.getElementById("email").value;
-  const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+\$/;
   
   if (!emailPattern.test(email)) {
     document.getElementById("email_text").innerHTML = "Please enter a valid email address in the format name@domain.tdl";
@@ -164,7 +250,7 @@ function validateEmail() {
 // This help validates the SSN
 function validateSSN() {
   const ssn = document.getElementById("ssn").value;
-  const ssnPattern = /^\d{3}-\d{2}-\d{4}$/;
+  const ssnPattern = /^\d{3}-\d{2}-\d{4}\$/;
   
   if (!ssnPattern.test(ssn)) {
     document.getElementById("ssn").setCustomValidity("Social Security Number must be in XXX-XX-XXXX format with digits only");
@@ -190,13 +276,15 @@ function formatSSN(input) {
 // This validates the user Id to ensure the user do not put a number first and is a min 5 character and a maximum if 20 characters long.
 function validateUserID() {
   const userid = document.getElementById("userid").value;
-  const useridPattern = /^[A-Za-z][A-Za-z0-9_-]{4,19}$/;
+  const useridPattern = /^[A-Za-z][A-Za-z0-9_-]{4,19}\$/;
   
   if (!useridPattern.test(userid)) {
     document.getElementById("userid_text").innerHTML = "User ID must start with a letter and contain only letters, numbers, dashes or underscores. Length must be 5-20 characters.";
     errorFlag++;
   } else {
     document.getElementById("userid_text").innerHTML = "";
+    // Update the username iframe when valid
+    updateUsernameIframe(userid);
   }
 }
 
@@ -207,7 +295,7 @@ function validatePasswords() {
   const password2 = document.getElementById("password2").value;
   
   // This make sure the password is following the required instruction to create a password.
-  const passwordPattern = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
+  const passwordPattern = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}\$/;
   
   if (!passwordPattern.test(password1)) {
     document.getElementById("password1_text").innerHTML = "Password must contain at least one number, one uppercase letter, one lowercase letter, and be at least 8 characters long.";
@@ -226,6 +314,11 @@ function validatePasswords() {
   } else {
     document.getElementById("password2_text").innerHTML = "";
   }
+}
+
+// Password entry validation
+function passwordentry() {
+  validatePasswords();
 }
 
 // Validate description field (no more than 200 words)
@@ -297,164 +390,144 @@ function validateAppointment() {
   }
 }
 
-// These are to ensure that the user is filling out the required fields on the form.
-document.getElementById("city").required = true;
-document.getElementById("Phone").required = true;
-document.getElementById("ssn").required = true;
-document.getElementById("password1").required = true; 
-document.getElementById("password2").required = true;
+// Initialize the username system
+function initUsernameSystem() {
+  const useridField = document.getElementById('userid');
+  const rememberCheckbox = document.getElementById('rememberMe');
+  
+  // Check for saved username cookie
+  const savedUsername = getUsernameCookie();
+  if (savedUsername) {
+    useridField.value = savedUsername;
+    rememberCheckbox.checked = true;
+    updateUsernameIframe(savedUsername);
+  } else {
+    updateUsernameIframe('');
+  }
+  
+  // Update iframe when username changes
+  useridField.addEventListener('input', function() {
+    updateUsernameIframe(this.value);
+  });
+}
 
-// These are place holders of te forn for users to see when filling out the form
-document.getElementById("city").placeholder = "City (required)";
-document.getElementById("Phone").placeholder = "(XXX)XXX-XXXX";
-document.getElementById("ssn").placeholder = "XXX-XX-XXXX";
-document.getElementById("password1").placeholder = "Required";
-document.getElementById("password2").placeholder = "Required";
+// Initialize everything when the page loads
+window.onload = function() {
+  document.getElementById("today").innerHTML = new Date().toLocaleDateString();
+  document.getElementById("outputformdata").style.display = "none";
+  
+  // Initialize the username system
+  initUsernameSystem();
+  
+  // Ensure the iframe container stays at the bottom even during scrolling
+  window.addEventListener('scroll', function() {
+    const container = document.getElementById('username-iframe-container');
+    if (container) {
+      container.style.bottom = '0';
+    }
+  });
+  
+  // Set up all required fields
+  document.getElementById("city").required = true;
+  document.getElementById("Phone").required = true;
+  document.getElementById("ssn").required = true;
+  document.getElementById("password1").required = true; 
+  document.getElementById("password2").required = true;
 
-// This is a event listener for city, phone, ssn, password1 and password2.
-document.getElementById("city").addEventListener("input", validateStateZip);
-document.getElementById("Phone").addEventListener("input", function(e) {
-  formatPhoneNumber(e.target);
-  validatePhone();
-});
-document.getElementById("ssn").addEventListener("input", function(e) {
-  formatSSN(e.target);
-  validateSSN();
-});
-document.getElementById("password1").addEventListener("input", validatePasswords);
-document.getElementById("password2").addEventListener("input", validatePasswords);
+  // Set placeholders
+  document.getElementById("city").placeholder = "City (required)";
+  document.getElementById("Phone").placeholder = "(XXX)XXX-XXXX";
+  document.getElementById("ssn").placeholder = "XXX-XX-XXXX";
+  document.getElementById("password1").placeholder = "Required";
+  document.getElementById("password2").placeholder = "Required";
+
+  // Add event listeners
+  document.getElementById("city").addEventListener("input", validateStateZip);
+  document.getElementById("Phone").addEventListener("input", function(e) {
+    formatPhoneNumber(e.target);
+    validatePhone();
+  });
+  document.getElementById("ssn").addEventListener("input", function(e) {
+    formatSSN(e.target);
+    validateSSN();
+  });
+  document.getElementById("password1").addEventListener("input", validatePasswords);
+  document.getElementById("password2").addEventListener("input", validatePasswords);
+  document.getElementById("userid").addEventListener("input", validateUserID);
+  document.getElementById("description").addEventListener("input", function(e) {
+    countWords(e.target);
+  });
+  
+  // Set up the remember me checkbox
+  document.getElementById("rememberMe").addEventListener("change", function() {
+    const username = document.getElementById("userid").value;
+    if (this.checked && username) {
+      setUsernameCookie(username, 27);
+    } else {
+      deleteUsernameCookie();
+    }
+  });
+};
 
 function getdata1() {
-    // This gets data from the form to put in the form data table.
-    const formData = {
-        "First Name": document.getElementById("FirstName").value,
-        "Middle Initial": document.getElementById("MiddleInit").value,
-        "Last Name": document.getElementById("LastName").value,
-        "Date of Birth": document.getElementById("date").value,
-        "Address Line 1": document.getElementById("addr1").value,
-        "Address Line 2": document.getElementById("addr2").value,
-        "City": document.getElementById("city").value,
-        "State": document.getElementById("State").value,
-        "Zip Code": document.getElementById("zip").value,
-        "Phone": document.getElementById("Phone").value,
-        "Email": document.getElementById("email").value,
-        "SSN": document.getElementById("ssn").value,
-        "User ID": document.getElementById("userid").value,
-        "Appointment Date": document.getElementById("Date").value,
-        "Appointment Time": document.getElementById("Time").value,
-        "Pain Scale": document.getElementById("scale").value,
-        "Description": document.getElementById("description").value
-    };
-         // This gets Bird Flu response
-    const birdFluResponse = document.querySelector('input[name="fav_language"]:checked');
-    if (birdFluResponse) {
-        formData["Bird Flu Status"] = birdFluResponse.value;
+  // This gets data from the form to put in the form data table.
+  const formData = {
+    "First Name": document.getElementById("FirstName").value,
+    "Middle Initial": document.getElementById("MiddleInit").value,
+    "Last Name": document.getElementById("LastName").value,
+    "Date of Birth": document.getElementById("date").value,
+    "Address Line 1": document.getElementById("addr1").value,
+    "Address Line 2": document.getElementById("addr2").value,
+    "City": document.getElementById("city").value,
+    "State": document.getElementById("State").value,
+    "Zip Code": document.getElementById("zip").value,
+    "Phone": document.getElementById("Phone").value,
+    "Email": document.getElementById("email").value,
+    "SSN": document.getElementById("ssn").value,
+    "User ID": document.getElementById("userid").value,
+    "Appointment Date": document.getElementById("Date").value,
+    "Appointment Time": document.getElementById("Time").value,
+    "Pain Scale": document.getElementById("scale").value,
+    "Description": document.getElementById("description").value,
+    "Remember Username": document.getElementById("rememberMe").checked ? "Yes" : "No"
+  };
+  
+  // This gets Bird Flu response
+  const birdFluResponse = document.querySelector('input[name="fav_language"]:checked');
+  if (birdFluResponse) {
+    formData["Bird Flu Status"] = birdFluResponse.value;
+  }
+  
+  // This gets selected symptoms
+  const symptoms = [];
+  for (let i = 1; i <= 5; i++) {
+    const symptom = document.getElementById(`symptom\${i}`);
+    if (symptom && symptom.checked) {
+      symptoms.push(symptom.value);
     }
-     // This gets selected symptoms
-    const symptoms = [];
-    for (let i = 1; i <= 5; i++) {
-        const symptom = document.getElementById(`symptom${i}`);
-        if (symptom && symptom.checked) {
-            symptoms.push(symptom.value);
-        }
-    }
-    if (symptoms.length > 0) {
-        formData["Symptoms"] = symptoms.join(", ");
-    }
+  }
+  if (symptoms.length > 0) {
+    formData["Symptoms"] = symptoms.join(", ");
+  }
 
-    // Create output HTML
-    let outputHTML = "<div style='background-color: #f0f0f0; padding: 15px; border-radius: 5px;'>";
-    outputHTML += "<h3 style='color: #333; margin-bottom: 15px;'>Form Data Summary:</h3>";
+  // Create output HTML
+  let outputHTML = "<div style='background-color: #f0f0f0; padding: 15px; border-radius: 5px;'>";
+  outputHTML += "<h3 style='color: #333; margin-bottom: 15px;'>Form Data Summary:</h3>";
 
-    // This add each form field to the output
-    for (const [key, value] of Object.entries(formData)) {
-        if (value && value.length > 0 && key !== "password1" && key !== "password2") {
-            outputHTML += `<p style='margin: 5px 0;'><strong>${key}:</strong> ${value}</p>`;
-        }
+  // This add each form field to the output
+  for (const [key, value] of Object.entries(formData)) {
+    if (value && value.length > 0 && key !== "password1" && key !== "password2") {
+      outputHTML += `<p style='margin: 5px 0;'><strong>${key}:</strong> ${value}</p>`;
     }
-    outputHTML += "</div>";
+  }
+  outputHTML += "</div>";
 
-    // this display the output of information from the form.
-    const outputDiv = document.getElementById("outputformdata");
-    outputDiv.innerHTML = outputHTML;
-    outputDiv.style.display = "block";
+  // this display the output of information from the form.
+  const outputDiv = document.getElementById("outputformdata");
+  outputDiv.innerHTML = outputHTML;
+  outputDiv.style.display = "block";
 }
 
 // this adds event listener for the Get Data button
 document.getElementById("getdata").addEventListener("click", getdata1);
 
-// This initialize the form data displayed the on page load
-window.onload = function() {
-    document.getElementById("today").innerHTML = new Date().toLocaleDateString();
-    document.getElementById("outputformdata").style.display = "none";
- // cookies.js - Simple cookie functions
-function setCookie(name, value, days) {
-  var expires = "";
-  if (days) {
-    var date = new Date();
-    date.setTime(date.getTime() + (days*24*60*60*1000));
-    expires = "; expires=" + date.toUTCString();
-  }
-  document.cookie = name + "=" + value + expires + "; path=/";
-}
-
-function getCookie(name) {
-  var nameEQ = name + "=";
-  var ca = document.cookie.split(';');
-  for(var i=0; i < ca.length; i++) {
-    var c = ca[i];
-    while (c.charAt(0) == ' ') c = c.substring(1);
-    if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
-  }
-  return null;
-}
-// welcome.js - Handle welcome message
-function updateWelcome() {
-  var firstName = document.getElementById("FirstName").value;
-  var welcomeText = "Welcome!";
-  
-  if (firstName) {
-    welcomeText = "Welcome back " + firstName;
-    if (firstName.toLowerCase() === "rontray") {
-      welcomeText = "Welcome back Rontray!";
-    }
-  }
-  
-  // Update header iframe content
-  try {
-    var headerFrame = document.getElementById("headerFrame");
-    if (headerFrame.contentDocument) {
-      var welcomeDiv = headerFrame.contentDocument.getElementById("welcomeMessage");
-      if (welcomeDiv) {
-        welcomeDiv.textContent = welcomeText;
-      }
-    }
-  } catch(e) {
-    console.log("Could not update welcome message");
-  }
-}
-
-// Load saved name on startup
-window.onload = function() {
-  var savedName = getCookie("firstName");
-  if (savedName) {
-    document.getElementById("FirstName").value = savedName;
-    document.getElementById("rememberMe").checked = true;
-    updateWelcome();
-  }
-  
-  // Add event listener to form submission
-  document.getElementById("signup").onsubmit = function() {
-    if (document.getElementById("rememberMe").checked) {
-      setCookie("firstName", document.getElementById("FirstName").value, 30);
-    } else {
-      setCookie("firstName", "", -1);
-    }
-    return true;
-  };
-  
-  // Update welcome message when name is typed
-  document.getElementById("FirstName").addEventListener("input", updateWelcome);
-};
-
-}
