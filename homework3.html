@@ -43,6 +43,39 @@ Another thing I noticed was that the "id" from the html pages wasn't identical t
                 background-color: beige;
                 border-radius: 5px;
                 }
+            /* Style for username iframe container */
+            #username-iframe-container {
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                width: 100%;
+                background-color: rgba(255, 255, 255, 0.9);
+                border-top: 2px solid skyblue;
+                z-index: 1000;
+                padding: 10px;
+                box-shadow: 0px -2px 10px rgba(0,0,0,0.1);
+            }
+            /* Style for username iframe */
+            #usernameFrame {
+                width: 100%;
+                border: none;
+                height: 60px;
+            }
+            /* Style for remember me checkbox area */
+            .remember-me-container {
+                display: flex;
+                align-items: center;
+                margin: 10px 0;
+            }
+            .remember-me-container label {
+                margin-left: 5px;
+            }
+            /* Add faded lime green background with black border to parameter */
+            input[name="FirstName"] {
+                background-color: rgba(50, 205, 50, 0.3);
+                border: 2px solid black;
+                padding: 5px;
+            }
         </style>
         
     </head>
@@ -292,6 +325,7 @@ Another thing I noticed was that the "id" from the html pages wasn't identical t
                     oninput="this.setCustomValidity('')"
                     title="5-20 characters; letters, dashes and underscores only. First character must be uppercase."
                 >
+                <span id="userid_text"></span>
         </td>
     </tr>
 <tr>
@@ -412,10 +446,14 @@ Another thing I noticed was that the "id" from the html pages wasn't identical t
  <td align="Middle"> <!-- the patient can go into more details on how the pain feel to better aid the doctor on detailed descriptions. The comment have to be within the count of 200 words.  -->
     <label for="description">Explain more about your Pain/Symptoms</label>
 </td></br>
-              <tr class="form">
+              
+<!-- Updated Remember Me checkbox with better styling -->
+<tr class="form">
   <td align="left">
-    <input type="checkbox" id="rememberMe" name="rememberMe">
-    <label for="rememberMe">Remember me</label>
+    <div class="remember-me-container">
+      <input type="checkbox" id="rememberMe" name="rememberMe">
+      <label for="rememberMe">Remember my username for 27 hours</label>
+    </div>
   </td>
 </tr>
 
@@ -457,13 +495,6 @@ Another thing I noticed was that the "id" from the html pages wasn't identical t
 <!-- Fixed Footer -->
 <iframe id="footerFrame" src="footer.html" style="width:100%; position:fixed; bottom:0; left:0; height:50px; z-index:999;"></iframe>
 <div style="margin-bottom:50px;"></div> <!-- Spacer -->
-
-  /* Add faded lime green background with black border to parameter */
-  input[name="FirstName"] {
-    background-color: rgba(50, 205, 50, 0.3);
-    border: 2px solid black;
-    padding: 5px;
-  }
 </style>
 
         
@@ -496,27 +527,139 @@ Another thing I noticed was that the "id" from the html pages wasn't identical t
         
  <script>
     document.getElementById("today").innerHTML = new Date().toLocaleDateString();
-</script><head>
+</script>
+<head>
   <!-- Your existing head content -->
   <script src="cookies.js"></script>
   <script src="welcome.js"></script>
 </head>
 
-</body>
- <!-- Add this iframe at the bottom of the page, just before the closing body tag -->
-<div id="username-iframe-container" style="position: fixed; bottom: 0; left: 0; width: 100%; background-color: rgba(255, 255, 255, 0.9); border-top: 2px solid skyblue; z-index: 1000; padding: 10px; box-shadow: 0px -2px 10px rgba(0,0,0,0.1);">
+<!-- Add username iframe container at the bottom of the page -->
+<div id="username-iframe-container">
   <iframe id="usernameFrame" style="width: 100%; border: none; height: 60px;"></iframe>
 </div>
 
-<!-- Update the remember me checkbox area with better styling -->
-<tr class="form">
-  <td align="left">
-    <div style="display: flex; align-items: center; margin: 10px 0;">
-      <input type="checkbox" id="rememberMe" name="rememberMe">
-      <label for="rememberMe" style="margin-left: 5px;">Remember my username for 27 hours</label>
-    </div>
-  </td>
-</tr>
+<!-- Custom JavaScript for username iframe and cookie functionality -->
+<script>
+// Cookie functions for username persistence
+function setUsernameCookie(username, hours) {
+  const date = new Date();
+  date.setTime(date.getTime() + (hours * 60 * 60 * 1000));
+  const expires = "; expires=" + date.toUTCString();
+  document.cookie = "username=" + encodeURIComponent(username) + expires + "; path=/";
+}
 
+function getUsernameCookie() {
+  const nameEQ = "username=";
+  const cookies = document.cookie.split(';');
+  for(let i = 0; i < cookies.length; i++) {
+    let cookie = cookies[i];
+    while (cookie.charAt(0) === ' ') {
+      cookie = cookie.substring(1);
+    }
+    if (cookie.indexOf(nameEQ) === 0) {
+      return decodeURIComponent(cookie.substring(nameEQ.length));
+    }
+  }
+  return null;
+}
+
+function deleteUsernameCookie() {
+  document.cookie = "username=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+}
+
+// Update the iframe content with the current username
+function updateUsernameIframe(username) {
+  const iframe = document.getElementById('usernameFrame');
+  if (iframe) {
+    const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+    iframeDoc.open();
+    iframeDoc.write(`
+      <!DOCTYPE html>
+      <html>
+      <head>
+        <style>
+          body {
+            font-family: "Times New Roman", Times, serif;
+            margin: 0;
+            padding: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background-color: beige;
+          }
+          .username-display {
+            font-size: 16px;
+            color: #333;
+          }
+          .username-value {
+            font-weight: bold;
+            color: #0066cc;
+          }
+        </style>
+      </head>
+      <body>
+        <div class="username-display">
+          Current User: <span class="username-value">\${username || 'Not logged in'}</span>
+        </div>
+      </body>
+      </html>
+    `);
+    iframeDoc.close();
+  }
+}
+
+// Initialize the username system
+function initUsernameSystem() {
+  const useridField = document.getElementById('userid');
+  const rememberCheckbox = document.getElementById('rememberMe');
+  
+  // Check for saved username cookie
+  const savedUsername = getUsernameCookie();
+  if (savedUsername) {
+    useridField.value = savedUsername;
+    rememberCheckbox.checked = true;
+    updateUsernameIframe(savedUsername);
+  } else {
+    updateUsernameIframe('');
+  }
+  
+  // Update iframe when username changes
+  useridField.addEventListener('input', function() {
+    updateUsernameIframe(this.value);
+  });
+  
+  // Handle checkbox changes
+  rememberCheckbox.addEventListener('change', function() {
+    if (!this.checked) {
+      deleteUsernameCookie();
+    } else if (useridField.value) {
+      setUsernameCookie(useridField.value, 27);
+    }
+  });
+}
+
+// Initialize everything when the page loads
+window.addEventListener('DOMContentLoaded', function() {
+  initUsernameSystem();
+  
+  // Ensure the iframe container stays at the bottom even during scrolling
+  window.addEventListener('scroll', function() {
+    const container = document.getElementById('username-iframe-container');
+    if (container) {
+      container.style.bottom = '0';
+    }
+  });
+  
+  // Ensure the iframe container stays at the bottom when window resizes
+  window.addEventListener('resize', function() {
+    const container = document.getElementById('username-iframe-container');
+    if (container) {
+      container.style.width = '100%';
+    }
+  });
+});
+</script>
+</body>
 <!-- End of file: homework3.html -->
 </html>
