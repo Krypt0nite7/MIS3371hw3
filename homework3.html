@@ -412,6 +412,13 @@ Another thing I noticed was that the "id" from the html pages wasn't identical t
  <td align="Middle"> <!-- the patient can go into more details on how the pain feel to better aid the doctor on detailed descriptions. The comment have to be within the count of 200 words.  -->
     <label for="description">Explain more about your Pain/Symptoms</label>
 </td></br>
+              <tr class="form">
+  <td align="left">
+    <input type="checkbox" id="rememberMe" name="rememberMe">
+    <label for="rememberMe">Remember me</label>
+  </td>
+</tr>
+
 <tr  class="form">
         <td align="Middle">
             <textarea 
@@ -440,12 +447,32 @@ Another thing I noticed was that the "id" from the html pages wasn't identical t
 </form> 
         <td align="Middle">
         <div id="outputformdata" style="display"></div>
+         <style>
+          <!-- Fixed Header -->
+<iframe id="headerFrame" src="header.html" style="width:100%; position:fixed; top:0; left:0; height:50px; z-index:999;"></iframe>
+<div style="height:50px;"></div> <!-- Spacer -->
+
+<!-- Your existing content here -->
+
+<!-- Fixed Footer -->
+<iframe id="footerFrame" src="footer.html" style="width:100%; position:fixed; bottom:0; left:0; height:50px; z-index:999;"></iframe>
+<div style="margin-bottom:50px;"></div> <!-- Spacer -->
+
+  /* Add faded lime green background with black border to parameter */
+  input[name="FirstName"] {
+    background-color: rgba(50, 205, 50, 0.3);
+    border: 2px solid black;
+    padding: 5px;
+  }
+</style>
+
         
         <div id="footer">
             <hr>
     
         </div>
         </td>
+         
         <!-- Load external JavaScript -->
         <script src="homework3.js"></script>
         
