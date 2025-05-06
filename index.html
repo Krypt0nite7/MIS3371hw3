@@ -9,11 +9,9 @@ Description: Jackson's Medical Patient Form
 <html>
     <head>
         <meta charset="utf-8">
-        <meta name="viewport"
-        content="width=device-width, intitial-scale=1.0"
-        >
+        <meta name="viewport" content="width=device-width, intitial-scale=1.0">
         
-         <!-- This is the title of the form page. -->
+        <!-- This is the title of the form page. -->
         <title>Jackson's Medical</title>
 
         <!-- Load external CSS styles -->
@@ -24,6 +22,33 @@ Description: Jackson's Medical Patient Form
                 background-color: beige;
                 font-family: "Time New Roman", Times, serif;
             }
+            
+            /* Sticky header styling */
+            .header {
+                position: sticky;
+                top: 0;
+                padding: 10px 16px;
+                background: #555;
+                color: #f1f1f1;
+                width: 80%;
+                margin: 0 auto;
+                text-align: center;
+                z-index: 100;
+            }
+            
+            /* Sticky footer styling */
+            .footer {
+                position: fixed;
+                left: 0;
+                bottom: 0;
+                width: 100%;
+                background-color: limegreen;
+                color: white;
+                text-align: center;
+                padding: 10px;
+                z-index: 99;
+            }
+            
             /*#banner is bordered with a skyblue outline with also having a center beige color*/
             #banner {
                 text-align: center; 
@@ -31,21 +56,63 @@ Description: Jackson's Medical Patient Form
                 padding: 20px 0; 
                 border: 3px solid skyblue;
                 background-color: beige;
-                }
+            }
+            
             #outputformdata {
                 margin:20px 0;
                 padding: 15px;
                 border: 1px solid;
                 background-color: beige;
                 border-radius: 5px;
-                }
+            }
+            
+            /* Style for username iframe container */
+            #username-iframe-container {
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                width: 100%;
+                background-color: rgba(255, 255, 255, 0.9);
+                border-top: 2px solid skyblue;
+                z-index: 1000;
+                padding: 10px;
+                box-shadow: 0px -2px 10px rgba(0,0,0,0.1);
+            }
+            
+            /* Style for username iframe */
+            #usernameFrame {
+                width: 100%;
+                border: none;
+                height: 60px;
+            }
+            
+            /* Style for remember me checkbox area */
+            .remember-me-container {
+                display: flex;
+                align-items: center;
+                margin: 10px 0;
+            }
+            
+            .remember-me-container label {
+                margin-left: 5px;
+            }
+            
+            /* Add faded lime green background with black border to parameter */
+            input[name="FirstName"] {
+                background-color: rgba(50, 205, 50, 0.3);
+                border: 2px solid black;
+                padding: 5px;
+            }
         </style>
-        
     </head>
     <body> 
+        <!-- Sticky header with site name -->
+        <div class="header">
+            <h2>Jackson's Medical</h2>
+        </div>
+        
         <div id="banner" style="text-align: center;"> 
             <table width="100%">
-                
                 <tr>
                     <td> <!--Jackson Medical is set on the left side of the header with the logo placed on the right side -->
                         <h1 style="margin:0;"> Jackson's Medical
@@ -57,7 +124,6 @@ Description: Jackson's Medical Patient Form
                     <td valign="top" style="font-size: 20;">
                         <!--The Jackon's Medical normal font is set at top of the page -->
                         Jackson's Medical
-
                     </td> <!--This set the date on the bottom right side of the border dispalying the day of the week, the month, day it self and year-->
                     <td valign="bottom" align="right">Today's date: <span id="today"></span></td>
                 </tr>
@@ -155,8 +221,7 @@ Description: Jackson's Medical Patient Form
     <tr class="form">  <!--New table Row-->
         <td align="left"> <!--New Table Data -->
             <label for="city">City,</label> <!--This request for a City in the form and is required-->
-            <label for="state">State</label><!--This request for the State in the form with options show below and is required-->
-                <input type="text" 
+                  <input type="text" 
                     size="10" 
                     maxlength="25" 
                     id="city" 
@@ -165,7 +230,8 @@ Description: Jackson's Medical Patient Form
                     oninput="this.setCustomValidity('')"
                     placeholder="Anytown (req'd)"
                      > <!-- the text length for city have a maximum of 25 characters and is validated by java-->
-                    <select id="State" name="State" required> <!--This is mandatory for the patient to select a state in the form they reside in-->
+            <label for="state">State</label><!--This request for the State in the form with options show below and is required-->
+                   <select id="State" name="State" required> <!--This is mandatory for the patient to select a state in the form they reside in-->
                         <option value="">Select a State</option>
                         <option value="AL">Alabama</option>
                         <option value="AK">Alaska</option>
@@ -288,6 +354,7 @@ Description: Jackson's Medical Patient Form
                     oninput="this.setCustomValidity('')"
                     title="5-20 characters; letters, dashes and underscores only. First character must be uppercase."
                 >
+                <span id="userid_text"></span>
         </td>
     </tr>
 <tr>
@@ -408,6 +475,17 @@ Description: Jackson's Medical Patient Form
  <td align="Middle"> <!-- the patient can go into more details on how the pain feel to better aid the doctor on detailed descriptions. The comment have to be within the count of 200 words.  -->
     <label for="description">Explain more about your Pain/Symptoms</label>
 </td></br>
+              
+<!-- Updated Remember Me checkbox with better styling -->
+<tr class="form">
+  <td align="left">
+    <div class="remember-me-container">
+      <input type="checkbox" id="rememberMe" name="rememberMe">
+      <label for="rememberMe">Remember my username for 27 hours</label>
+    </div>
+  </td>
+</tr>
+
 <tr  class="form">
         <td align="Middle">
             <textarea 
@@ -436,18 +514,65 @@ Description: Jackson's Medical Patient Form
 </form> 
         <td align="Middle">
         <div id="outputformdata" style="display"></div>
-        
-        <div id="footer">
-            <hr>
-    
+
+        <!-- Sticky footer with Medical Form text -->
+        <div class="footer">
+            <p>Medical Form</p>
         </div>
-        </td>
+
         <!-- Load external JavaScript -->
         <script src="homework3.js"></script>
         
- <script>
-    document.getElementById("today").innerHTML = new Date().toLocaleDateString();
-</script>
-</body>
-<!-- End of file: homework3.html -->
+        <script>
+            document.getElementById("today").innerHTML = new Date().toLocaleDateString();
+        </script>
+        
+        <!-- Cookie script -->
+        <script>
+            // Set cookie function
+            function setCookie(cname, cvalue, exhours) {
+                const d = new Date();
+                d.setTime(d.getTime() + (exhours * 60 * 60 * 1000));
+                let expires = "expires=" + d.toUTCString();
+                document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+            }
+            
+            // Get cookie function
+            function getCookie(cname) {
+                let name = cname + "=";
+                let decodedCookie = decodeURIComponent(document.cookie);
+                let ca = decodedCookie.split(';');
+                for(let i = 0; i < ca.length; i++) {
+                    let c = ca[i];
+                    while (c.charAt(0) == ' ') {
+                        c = c.substring(1);
+                    }
+                    if (c.indexOf(name) == 0) {
+                        return c.substring(name.length, c.length);
+                    }
+                }
+                return "";
+            }
+            
+            // Check and save username when remember me is checked
+            document.getElementById('rememberMe').addEventListener('change', function() {
+                if(this.checked) {
+                    const username = document.getElementById('userid').value;
+                    if(username) {
+                        setCookie("username", username, 27);
+                    }
+                }
+            });
+            
+            // Load saved username if exists
+            window.onload = function() {
+                const savedUsername = getCookie("username");
+                if(savedUsername !== "") {
+                    document.getElementById('userid').value = savedUsername;
+                    document.getElementById('rememberMe').checked = true;
+                }
+            };
+        </script>
+    </body>
 </html>
+
